@@ -1,0 +1,29 @@
+{
+  "name": "inverted-index-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "\"/src/inverted-index.js\"",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "\"jasmine\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mcdavid95/inverted-index-api.git"
+  },
+  "keywords": [
+    "\"search",
+    "index\""
+  ],
+  "author": "\"Mcdavid Emereuwa\"",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mcdavid95/inverted-index-api/issues"
+  },
+  "homepage": "https://github.com/Mcdavid95/inverted-index-api#readme",
+  "dependencies": {
+    "dotenv": "^4.0.0"
+  }
+}
