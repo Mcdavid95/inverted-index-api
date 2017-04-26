@@ -24,6 +24,18 @@
   },
   "homepage": "https://github.com/Mcdavid95/inverted-index-api#readme",
   "dependencies": {
-    "dotenv": "^4.0.0"
+    "babel-eslint": "^7.2.3",
+    "dotenv": "^4.0.0",
+    "eslint": "^3.19.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "gulp": "^3.9.1",
+    "jasmine-node": "^1.14.5",
+    "supertest": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-react": "^6.10.3",
+    "jasmine-node": "^1.14.5"
   }
 }
