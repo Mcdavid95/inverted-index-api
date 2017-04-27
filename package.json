@@ -36,6 +36,7 @@
   "devDependencies": {
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-react": "^6.10.3",
+    "gulp-istanbul-report": "0.0.1",
     "jasmine-node": "^1.14.5"
   }
 }
