@@ -26,6 +26,7 @@
   "dependencies": {
     "babel-eslint": "^7.2.3",
     "body-parser": "^1.17.1",
+    "coveralls": "^2.13.1",
     "dotenv": "^4.0.0",
     "eslint": "^3.19.0",
     "eslint-plugin-import": "^2.2.0",
@@ -33,6 +34,7 @@
     "express": "^4.15.2",
     "gulp": "^3.9.1",
     "gulp-live-server": "0.0.30",
+    "jasmine": "^2.6.0",
     "jasmine-node": "^1.14.5",
     "supertest": "^3.0.0"
   },
