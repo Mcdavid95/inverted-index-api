@@ -41,10 +41,12 @@
     "supertest": "^3.0.0"
   },
   "devDependencies": {
+    "codacy-coverage": "^2.0.2",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-react": "^6.10.3",
     "gulp-babel": "^6.1.2",
     "gulp-babel-istanbul": "^1.6.0",
+    "gulp-codacy": "^1.0.0",
     "gulp-coverage": "^0.3.38",
     "gulp-coveralls": "^0.1.4",
     "gulp-inject-modules": "^1.0.0",
