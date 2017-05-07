@@ -2,43 +2,47 @@
  * @class InvertedIndex
  */
 class InvertedIndex {
-/**
- * @constructor
- */
+  /**
+   * @constructor
+   */
   constructor() {
     this.mappedIndex = {};
     this.content = '';
-    this.documents = {};
+    this.document = {};
   }
-/**
- * @return {Error | boolean} returns true or an error message
- * @param {any } file any file
- */
+      /**
+       * @return {Error | boolean} returns true or an error message
+       * @param {any } file any file
+       */
   isJson(file) {
     this.content = file;
     const stringFile = JSON.stringify(file);
     const isArray = JSON.parse(stringFile);
-    if (isArray.length > 0 && isArray.some(arrayObject => arrayObject.title === undefined && arrayObject.text === undefined)) {
-      throw new Error('malformed file');
-    } else {
-      return true;
+    if (isArray.length > 0) {
+      if (isArray.some(arrayObject => arrayObject.title === undefined ||
+       arrayObject.text === undefined)) {
+        throw new Error('malformed file');
+      } else {
+        return true;
+      }
     }
   }
 
- /**
+  /**
    *@description {takes in a file and returns an object containing each word and index(ces)}
    * @param {String }fileName of file
    * @param {Object}fileContent content of file to be indexed
    * @return {Object}indexed filename and index(indicies)
    */
   createIndex(fileName, fileContent) {
-    if (this.isJson(fileName) === true && fileName.length > 0) {
-      fileContent = fileName;
-      this.content = fileContent;
+    if (this.isJson(fileContent) === true) {
+      this.index = {};
+      this.fileContent = fileContent;
+      this.fileName = fileName;
       const mappedIndex = {};
       fileContent.forEach((file) => {
-        const doc = file.text;
-        const removeSymbols = doc.replace(/[-.,;:#*!@%&+={}?|_~\\()]/g, ' ');
+        const textFile = file.text;
+        const removeSymbols = textFile.replace(/[-.,;:#*!@%&+={}?|_~''\\()]/g, ' ');
         const changeToLowerCase = removeSymbols.toLowerCase();
         const singleWord = changeToLowerCase.split(' ');
 
@@ -46,62 +50,61 @@ class InvertedIndex {
           if (word in mappedIndex) {
             const joinedIndex = (mappedIndex[word].concat([fileContent.indexOf(file)]));
             mappedIndex[word] = Array.from(new Set(joinedIndex));
+            this.index[fileName] = mappedIndex;
           }
           if (!(word in mappedIndex)) {
             mappedIndex[word] = [fileContent.indexOf(file)];
-          } else if (!(singleWord.indexOf(file))) {
-            mappedIndex[word] = fileContent.indexOf(file, mappedIndex[word] + 1);
+          } else if (!(fileContent.indexOf(file) in mappedIndex[word])) {
+            this.index[fileName] = mappedIndex;
           }
         });
       });
-      this.documents = mappedIndex;
-      return mappedIndex;
-    } else {
-      this.documents = null;
-      return 'Invalid file or Empty file';
+      const indices = this.index;
+      return indices;
     }
   }
-  /**
-   *@returns { object} created index
-   * @param {String } filename
-   */
-  getIndex(filename) {
-    return this.documents[filename];
+      /**
+       * @return {Object} returns index
+       * @param {String} fileName of indexed file
+       */
+  getIndex(fileName) {
+    this.fileName = fileName;
+    const index = this.index[fileName];
+    return index;
   }
 
   /**
    * @return {Object}returns an Object containing search results
-   * @param {Objects } index
-   * @param {String } filename
+   * @param {String } fileName
    * @param {Array } terms
    */
-  searchIndex(index, filename, ...terms) {
-    index = this.documents;
-    const words = terms.toString().split(',');
+  searchIndex(fileName, ...terms) {
+    if (terms[0] === undefined) {
+      terms = fileName;
+    }
+    const index = this.index[this.fileName];
+    const check = terms.toString().toLowerCase();
+    const words = check.split(',');
     const searchWords = {};
     const results = {};
     if (words.length > 1) {
       words.forEach((word) => {
         if (word in index) {
           results[word] = index[word];
-          searchWords[filename] = results;
+          searchWords[this.fileName] = results;
         } else {
           results[word] = ['Term not found'];
-          searchWords[filename] = results;
+          searchWords[this.fileName] = results;
         }
       });
     } else if (words in index) {
       results[words] = index[words];
-      searchWords[filename] = results;
+      searchWords[this.fileName] = results;
     } else {
       results[words] = ['Term not found'];
-      searchWords[filename] = results;
+      searchWords[this.fileName] = results;
     }
     return searchWords;
   }
-  /**
-   * @return {boolean } returns true or false values.
-   * @param {Object } file
-   */
 }
-exports.InvertedIndex = InvertedIndex;
+export default InvertedIndex;

@@ -1,5 +1,9 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -16,7 +20,7 @@ var InvertedIndex = function () {
 
     this.mappedIndex = {};
     this.content = '';
-    this.documents = {};
+    this.document = {};
   }
   /**
    * @return {Error | boolean} returns true or an error message
@@ -30,32 +34,37 @@ var InvertedIndex = function () {
       this.content = file;
       var stringFile = JSON.stringify(file);
       var isArray = JSON.parse(stringFile);
-      if (isArray.length > 0 && isArray.some(function (arrayObject) {
-        return arrayObject.title === undefined && arrayObject.text === undefined;
-      })) {
-        throw new Error('malformed file');
-      } else {
-        return true;
+      if (isArray.length > 0) {
+        if (isArray.some(function (arrayObject) {
+          return arrayObject.title === undefined || arrayObject.text === undefined;
+        })) {
+          throw new Error('malformed file');
+        } else {
+          return true;
+        }
       }
     }
 
     /**
-      *@description {takes in a file and returns an object containing each word and index(ces)}
-      * @param {String }fileName of file
-      * @param {Object}fileContent content of file to be indexed
-      * @return {Object}indexed filename and index(indicies)
-      */
+     *@description {takes in a file and returns an object containing each word and index(ces)}
+     * @param {String }fileName of file
+     * @param {Object}fileContent content of file to be indexed
+     * @return {Object}indexed filename and index(indicies)
+     */
 
   }, {
     key: 'createIndex',
     value: function createIndex(fileName, fileContent) {
-      if (this.isJson(fileName) === true && fileName.length > 0) {
-        fileContent = fileName;
-        this.content = fileContent;
+      var _this = this;
+
+      if (this.isJson(fileContent) === true) {
+        this.index = {};
+        this.fileContent = fileContent;
+        this.fileName = fileName;
         var mappedIndex = {};
         fileContent.forEach(function (file) {
-          var doc = file.text;
-          var removeSymbols = doc.replace(/[-.,;:#*!@%&+={}?|_~\\()]/g, ' ');
+          var textFile = file.text;
+          var removeSymbols = textFile.replace(/[-.,;:#*!@%&+={}?|_~''\\()]/g, ' ');
           var changeToLowerCase = removeSymbols.toLowerCase();
           var singleWord = changeToLowerCase.split(' ');
 
@@ -63,78 +72,77 @@ var InvertedIndex = function () {
             if (word in mappedIndex) {
               var joinedIndex = mappedIndex[word].concat([fileContent.indexOf(file)]);
               mappedIndex[word] = Array.from(new Set(joinedIndex));
+              _this.index[fileName] = mappedIndex;
             }
             if (!(word in mappedIndex)) {
               mappedIndex[word] = [fileContent.indexOf(file)];
-            } else if (!singleWord.indexOf(file)) {
-              mappedIndex[word] = fileContent.indexOf(file, mappedIndex[word] + 1);
+            } else if (!(fileContent.indexOf(file) in mappedIndex[word])) {
+              _this.index[fileName] = mappedIndex;
             }
           });
         });
-        this.documents = mappedIndex;
-        return mappedIndex;
-      } else {
-        this.documents = null;
-        return 'Invalid file or Empty file';
+        var indices = this.index;
+        return indices;
       }
     }
     /**
-     *@returns { object} created index
-     * @param {String } filename
+     * @return {Object} returns index
+     * @param {String} fileName of indexed file
      */
 
   }, {
     key: 'getIndex',
-    value: function getIndex(filename) {
-      return this.documents[filename];
+    value: function getIndex(fileName) {
+      this.fileName = fileName;
+      var index = this.index[fileName];
+      return index;
     }
 
     /**
      * @return {Object}returns an Object containing search results
-     * @param {Objects } index
-     * @param {String } filename
+     * @param {String } fileName
      * @param {Array } terms
      */
 
   }, {
     key: 'searchIndex',
-    value: function searchIndex(index, filename) {
-      index = this.documents;
+    value: function searchIndex(fileName) {
+      var _this2 = this;
 
-      for (var _len = arguments.length, terms = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-        terms[_key - 2] = arguments[_key];
+      for (var _len = arguments.length, terms = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        terms[_key - 1] = arguments[_key];
       }
 
-      var words = terms.toString().split(',');
+      if (terms[0] === undefined) {
+        terms = fileName;
+      }
+      var index = this.index[this.fileName];
+      var check = terms.toString().toLowerCase();
+      var words = check.split(',');
       var searchWords = {};
       var results = {};
       if (words.length > 1) {
         words.forEach(function (word) {
           if (word in index) {
             results[word] = index[word];
-            searchWords[filename] = results;
+            searchWords[_this2.fileName] = results;
           } else {
             results[word] = ['Term not found'];
-            searchWords[filename] = results;
+            searchWords[_this2.fileName] = results;
           }
         });
       } else if (words in index) {
         results[words] = index[words];
-        searchWords[filename] = results;
+        searchWords[this.fileName] = results;
       } else {
         results[words] = ['Term not found'];
-        searchWords[filename] = results;
+        searchWords[this.fileName] = results;
       }
       return searchWords;
     }
-    /**
-     * @return {boolean } returns true or false values.
-     * @param {Object } file
-     */
-
   }]);
 
   return InvertedIndex;
 }();
 
-exports.InvertedIndex = InvertedIndex;
+exports.default = InvertedIndex;
