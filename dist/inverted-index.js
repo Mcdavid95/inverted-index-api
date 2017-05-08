@@ -38,9 +38,10 @@ var InvertedIndex = function () {
         if (isArray.some(function (arrayObject) {
           return arrayObject.title === undefined || arrayObject.text === undefined;
         })) {
-          return 'malformed file';
+          throw new Error('malformed file');
+        } else {
+          return true;
         }
-        return true;
       }
     }
 
@@ -63,8 +64,9 @@ var InvertedIndex = function () {
         var mappedIndex = {};
         fileContent.forEach(function (file) {
           var textFile = file.text;
-          var removeSymbols = textFile.replace(/[-.,;:#*!@%&+={}?|_~''\\()]/g, ' ').toLowerCase();
-          var singleWord = removeSymbols.split(' ');
+          var removeSymbols = textFile.replace(/[-.,;:#*!@%&+={}?|_~''\\()]/g, ' ');
+          var changeToLowerCase = removeSymbols.toLowerCase();
+          var singleWord = changeToLowerCase.split(' ');
 
           singleWord.forEach(function (word) {
             if (word in mappedIndex) {
@@ -82,18 +84,19 @@ var InvertedIndex = function () {
         var indices = this.index;
         return indices;
       }
-      this.index = null;
-      return 'malformed file';
     }
     /**
      * @return {Object} returns index
      * @param {String} fileName of indexed file
      */
-    /* getIndex(fileName) {
-       this.fileName = fileName;
-       const index = this.index[fileName];
-       return index;
-     }*/
+
+  }, {
+    key: 'getIndex',
+    value: function getIndex(fileName) {
+      this.fileName = fileName;
+      var index = this.index[fileName];
+      return index;
+    }
 
     /**
      * @return {Object}returns an Object containing search results
