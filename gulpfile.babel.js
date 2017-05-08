@@ -54,9 +54,9 @@ gulp.task('coverage', (cb) => {
 });
 
 // Load code coverage to coveralls
-gulp.task('coverage', ['run-test'], () => {
+gulp.task('coveralls', ['run-test'], () => {
   return gulp.src('coverage/lcov.info')
     .pipe(coveralls());
 });
 
-gulp.task('default', ['run-test', 'coverage', 'test']);
+gulp.task('default', ['run-test', 'coverage', 'coveralls', 'test']);
