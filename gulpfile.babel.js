@@ -8,8 +8,6 @@ import coveralls from 'gulp-coveralls';
 import babel from 'gulp-babel';
 import istanbul from 'gulp-babel-istanbul';
 import injectModules from 'gulp-inject-modules';
-// import codacy from 'gulp-codacy';
-
 // Run app server
 /* gulp.task('serve', () =>
   nodemon({
