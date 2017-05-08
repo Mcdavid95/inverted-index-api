@@ -21,10 +21,9 @@ class InvertedIndex {
     if (isArray.length > 0) {
       if (isArray.some(arrayObject => arrayObject.title === undefined ||
        arrayObject.text === undefined)) {
-        throw new Error('malformed file');
-      } else {
-        return true;
+        return ('malformed file');
       }
+      return true;
     }
   }
 
@@ -42,9 +41,9 @@ class InvertedIndex {
       const mappedIndex = {};
       fileContent.forEach((file) => {
         const textFile = file.text;
-        const removeSymbols = textFile.replace(/[-.,;:#*!@%&+={}?|_~''\\()]/g, ' ');
-        const changeToLowerCase = removeSymbols.toLowerCase();
-        const singleWord = changeToLowerCase.split(' ');
+        const removeSymbols = textFile
+        .replace(/[-.,;:#*!@%&+={}?|_~''\\()]/g, ' ').toLowerCase();
+        const singleWord = removeSymbols.split(' ');
 
         singleWord.forEach((word) => {
           if (word in mappedIndex) {
@@ -62,16 +61,18 @@ class InvertedIndex {
       const indices = this.index;
       return indices;
     }
+    this.index = null;
+    return 'malformed file';
   }
       /**
        * @return {Object} returns index
        * @param {String} fileName of indexed file
        */
-  getIndex(fileName) {
+ /* getIndex(fileName) {
     this.fileName = fileName;
     const index = this.index[fileName];
     return index;
-  }
+  }*/
 
   /**
    * @return {Object}returns an Object containing search results

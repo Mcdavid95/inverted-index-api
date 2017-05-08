@@ -21,7 +21,7 @@ describe('Read book data', () => {
   it('should throw error for malformed file', () => {
     const index = new InvertedIndex(invalid);
 
-    expect(index.isJson(invalid)).toBe(Error('malformed file'));
+    expect(index.isJson(invalid)).toEqual('malformed file');
   });
 });
 
@@ -61,7 +61,7 @@ describe('Populate Index', () => {
       const index = new InvertedIndex();
       const fileName = 'invalid';
 
-      expect(index.createIndex(fileName, invalid)).toThrow(Error('malformed file'));
+      expect(index.createIndex(fileName, invalid)).toEqual('malformed file');
     });
   });
 });
