@@ -37,9 +37,14 @@ var InvertedIndex = function () {
         if (isArray.some(function (arrayObject) {
           return arrayObject.title === undefined || arrayObject.text === undefined;
         })) {
+<<<<<<< HEAD
+          throw new Error('malformed file');
+        } else {
+          return true;
+=======
           return 'Incorrect Json format';
+>>>>>>> refs/remotes/origin/dev
         }
-        return true;
       }
     }
 
@@ -62,8 +67,9 @@ var InvertedIndex = function () {
         var mappedIndex = {};
         fileContent.forEach(function (file) {
           var textFile = file.text;
-          var removeSymbols = textFile.replace(/[-.,;:#*!@%&+={}?|_~''\\()]/g, ' ').toLowerCase();
-          var singleWord = removeSymbols.split(' ');
+          var removeSymbols = textFile.replace(/[-.,;:#*!@%&+={}?|_~''\\()]/g, ' ');
+          var changeToLowerCase = removeSymbols.toLowerCase();
+          var singleWord = changeToLowerCase.split(' ');
 
           singleWord.forEach(function (word) {
             if (word in mappedIndex) {
@@ -81,8 +87,11 @@ var InvertedIndex = function () {
         this.mappedIndex = mappedIndex;
         return this.index;
       }
+<<<<<<< HEAD
+=======
       this.index = null;
       return 'Incorrect Json format';
+>>>>>>> refs/remotes/origin/dev
     }
     /**
      * @return {Object} returns index
@@ -93,9 +102,14 @@ var InvertedIndex = function () {
     key: 'getIndex',
     value: function getIndex(fileName) {
       this.fileName = fileName;
+<<<<<<< HEAD
+      var index = this.index[fileName];
+      return index;
+=======
       var mappedIndex = {};
       mappedIndex[fileName] = this.mappedIndex;
       return mappedIndex;
+>>>>>>> refs/remotes/origin/dev
     }
 
     /**
