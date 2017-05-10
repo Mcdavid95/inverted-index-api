@@ -14,6 +14,10 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
+# NODE_ENV files
+.env
+.env.example
+
 # nyc test coverage
 .nyc_output
 
