@@ -8,7 +8,6 @@ class InvertedIndex {
   constructor() {
     this.mappedIndex = {};
     this.content = '';
-    this.document = {};
   }
       /**
        * @return {Error | boolean} returns true or an error message
@@ -21,7 +20,7 @@ class InvertedIndex {
     if (isArray.length > 0) {
       if (isArray.some(arrayObject => arrayObject.title === undefined ||
        arrayObject.text === undefined)) {
-        return ('malformed file');
+        return ('Incorrect Json format');
       }
       return true;
     }
@@ -58,21 +57,22 @@ class InvertedIndex {
           }
         });
       });
-      const indices = this.index;
-      return indices;
+      this.mappedIndex = mappedIndex;
+      return this.index;
     }
     this.index = null;
-    return 'malformed file';
+    return 'Incorrect Json format';
   }
       /**
        * @return {Object} returns index
        * @param {String} fileName of indexed file
        */
- /* getIndex(fileName) {
+  getIndex(fileName) {
     this.fileName = fileName;
-    const index = this.index[fileName];
-    return index;
-  }*/
+    const mappedIndex = {};
+    mappedIndex[fileName] = this.mappedIndex;
+    return mappedIndex;
+  }
 
   /**
    * @return {Object}returns an Object containing search results

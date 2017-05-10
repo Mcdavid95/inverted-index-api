@@ -8,8 +8,6 @@ import coveralls from 'gulp-coveralls';
 import babel from 'gulp-babel';
 import istanbul from 'gulp-babel-istanbul';
 import injectModules from 'gulp-inject-modules';
-// import codacy from 'gulp-codacy';
-
 // Run app server
 /* gulp.task('serve', () =>
   nodemon({
@@ -56,24 +54,9 @@ gulp.task('coverage', (cb) => {
 });
 
 // Load code coverage to coveralls
-gulp.task('coveralls', ['test'], () => {
-  // If not running on CI environment it won't send lcov.info to coveralls
-  if (!process.env.CI) {
-    return;
-  }
-
+gulp.task('coveralls', ['run-test'], () => {
   return gulp.src('coverage/lcov.info')
     .pipe(coveralls());
 });
 
-/* gulp.task('codacy', () => {
-  return gulp
-    .src(['coverage/lcov.info'], { read: false })
-    .pipe(codacy({
-      token: '192bff7bac8b4925a07779f3eafc7f8c'
-    }))
-  ;
-});*/
-
-gulp.task('default', ['run-test', 'coveralls', 'coverage']);
-
+gulp.task('default', ['run-test', 'coverage', 'coveralls', 'test']);

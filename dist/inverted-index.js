@@ -20,7 +20,6 @@ var InvertedIndex = function () {
 
     this.mappedIndex = {};
     this.content = '';
-    this.document = {};
   }
   /**
    * @return {Error | boolean} returns true or an error message
@@ -38,9 +37,13 @@ var InvertedIndex = function () {
         if (isArray.some(function (arrayObject) {
           return arrayObject.title === undefined || arrayObject.text === undefined;
         })) {
+<<<<<<< HEAD
           throw new Error('malformed file');
         } else {
           return true;
+=======
+          return 'Incorrect Json format';
+>>>>>>> refs/remotes/origin/dev
         }
       }
     }
@@ -81,9 +84,14 @@ var InvertedIndex = function () {
             }
           });
         });
-        var indices = this.index;
-        return indices;
+        this.mappedIndex = mappedIndex;
+        return this.index;
       }
+<<<<<<< HEAD
+=======
+      this.index = null;
+      return 'Incorrect Json format';
+>>>>>>> refs/remotes/origin/dev
     }
     /**
      * @return {Object} returns index
@@ -94,8 +102,14 @@ var InvertedIndex = function () {
     key: 'getIndex',
     value: function getIndex(fileName) {
       this.fileName = fileName;
+<<<<<<< HEAD
       var index = this.index[fileName];
       return index;
+=======
+      var mappedIndex = {};
+      mappedIndex[fileName] = this.mappedIndex;
+      return mappedIndex;
+>>>>>>> refs/remotes/origin/dev
     }
 
     /**
