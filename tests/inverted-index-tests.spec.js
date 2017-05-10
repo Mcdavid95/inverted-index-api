@@ -3,6 +3,7 @@ import InvertedIndex from '../src/inverted-index';
 import books from '../fixtures/books.json';
 import invalid from '../fixtures/invalidBook.json';
 import fortress from '../fixtures/book1.json';
+import server from '../routes/app';
 // import badBooks from '../fixtures/badBooks.json';
 
 describe('Read book data', () => {
@@ -21,7 +22,7 @@ describe('Read book data', () => {
   it('should throw error for malformed file', () => {
     const index = new InvertedIndex(invalid);
 
-    expect(index.isJson(invalid)).toEqual('malformed file');
+    expect(index.isJson(invalid)).toEqual('Incorrect Json format');
   });
 });
 
@@ -61,7 +62,7 @@ describe('Populate Index', () => {
       const index = new InvertedIndex();
       const fileName = 'invalid';
 
-      expect(index.createIndex(fileName, invalid)).toEqual('malformed file');
+      expect(index.createIndex(fileName, invalid)).toEqual('Incorrect Json format');
     });
   });
 });

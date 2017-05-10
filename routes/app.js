@@ -26,9 +26,10 @@ if (NODE_ENV === 'PROD') {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/api/createIndex', upload.single('Books'), (req, res) => {
-  res.send(index.createIndex(req.file, req.body));
-  res.send(index.getIndex(req.body));
+app.post('/api/createIndex', upload.array('Books'), (req, res) => {
+  const data = JSON.parse(req.body);
+  res.send(index.createIndex(req.file, data));
+  res.send(index.getIndex(req.data));
 });
 
 app.post('/api/searchIndex', (req, res) => {
