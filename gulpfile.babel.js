@@ -1,24 +1,26 @@
 import gulp from 'gulp';
- // import dotenv from 'dotenv';
+import dotenv from 'dotenv';
 // import coverage from 'gulp-coverage';
-// import nodemon from 'gulp-nodemon';
+import nodemon from 'gulp-nodemon';
 import jasmineNode from 'gulp-jasmine-node';
 import istanbulReport from 'gulp-istanbul-report';
 import coveralls from 'gulp-coveralls';
 import babel from 'gulp-babel';
 import istanbul from 'gulp-babel-istanbul';
 import injectModules from 'gulp-inject-modules';
+
+dotenv.config();
 // Run app server
-/* gulp.task('serve', () =>
+gulp.task('serve', ['transpile'], () =>
   nodemon({
-    script: 'index.js',
+    script: './index.js',
     ext: 'js html',
     env: { NODE_ENV: process.env.NODE_ENV }
   })
-);*/
+);
 
 gulp.task('transpile', () => {
-  return gulp.src(['src/inverted-index.js', 'tests/inverted-index-tests.spec.js'])
+  return gulp.src(['src/inverted-index.js', 'tests/inverted-index-tests.spec.js', 'routes/app.js'])
   .pipe(babel({
     presets: ['es2015']
   }))
@@ -39,11 +41,11 @@ gulp.task('run-test', ['transpile'], () => {
 
 // Generate coverage report
 gulp.task('coverage', (cb) => {
-  gulp.src(['src/inverted-index.js', 'tests/inverted-index-tests.spec.js'])
+  gulp.src(['src/inverted-index.js', 'routes/app.js'])
     .pipe(istanbul())
     .pipe(istanbul.hookRequire())
     .on('finish', () => {
-      gulp.src('tests/inverted-index-tests.spec.js')
+      gulp.src(['tests/inverted-index-tests.spec.js'])
       .pipe(babel())
       .pipe(injectModules())
       .pipe(jasmineNode())
@@ -59,4 +61,5 @@ gulp.task('coveralls', ['run-test'], () => {
     .pipe(coveralls());
 });
 
-gulp.task('default', ['run-test', 'coverage', 'coveralls', 'test']);
+
+gulp.task('default', ['run-test', 'serve', 'coverage', 'coveralls', 'test']);
