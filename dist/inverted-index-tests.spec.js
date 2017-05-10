@@ -16,11 +16,14 @@ var _book = require('../fixtures/book1.json');
 
 var _book2 = _interopRequireDefault(_book);
 
+var _app = require('../routes/app');
+
+var _app2 = _interopRequireDefault(_app);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import badBooks from '../fixtures/badBooks.json';
 
-// import jasmine from 'jasmine-node';
 describe('Read book data', function () {
   it('should not be empty', function () {
     var index = new _invertedIndex2.default(_books2.default);
@@ -37,9 +40,10 @@ describe('Read book data', function () {
   it('should throw error for malformed file', function () {
     var index = new _invertedIndex2.default(_invalidBook2.default);
 
-    expect(index.isJson(_invalidBook2.default)).toEqual('malformed file');
+    expect(index.isJson(_invalidBook2.default)).toEqual('Incorrect Json format');
   });
-});
+}); // import jasmine from 'jasmine-node';
+
 
 describe('Populate Index', function () {
   describe('when a Valid JSON is passed to create index', function () {
@@ -76,7 +80,7 @@ describe('Populate Index', function () {
       var index = new _invertedIndex2.default();
       var fileName = 'invalid';
 
-      expect(index.createIndex(fileName, _invalidBook2.default)).toEqual('malformed file');
+      expect(index.createIndex(fileName, _invalidBook2.default)).toEqual('Incorrect Json format');
     });
   });
 });
