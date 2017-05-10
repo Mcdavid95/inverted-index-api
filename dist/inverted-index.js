@@ -20,7 +20,6 @@ var InvertedIndex = function () {
 
     this.mappedIndex = {};
     this.content = '';
-    this.document = {};
   }
   /**
    * @return {Error | boolean} returns true or an error message
@@ -38,7 +37,7 @@ var InvertedIndex = function () {
         if (isArray.some(function (arrayObject) {
           return arrayObject.title === undefined || arrayObject.text === undefined;
         })) {
-          return 'malformed file';
+          return 'Incorrect Json format';
         }
         return true;
       }
@@ -79,21 +78,25 @@ var InvertedIndex = function () {
             }
           });
         });
-        var indices = this.index;
-        return indices;
+        this.mappedIndex = mappedIndex;
+        return this.index;
       }
       this.index = null;
-      return 'malformed file';
+      return 'Incorrect Json format';
     }
     /**
      * @return {Object} returns index
      * @param {String} fileName of indexed file
      */
-    /* getIndex(fileName) {
-       this.fileName = fileName;
-       const index = this.index[fileName];
-       return index;
-     }*/
+
+  }, {
+    key: 'getIndex',
+    value: function getIndex(fileName) {
+      this.fileName = fileName;
+      var mappedIndex = {};
+      mappedIndex[fileName] = this.mappedIndex;
+      return mappedIndex;
+    }
 
     /**
      * @return {Object}returns an Object containing search results
