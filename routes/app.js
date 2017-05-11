@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import path from 'path';
+import fs from 'fs';
 import dotenv from 'dotenv';
 import multer from 'multer';
 import InvertedIndex from '../src/inverted-index';
@@ -26,17 +26,30 @@ if (NODE_ENV === 'PROD') {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/api/createIndex', upload.array('Books'), (req, res) => {
-  const data = JSON.parse(req.body);
-  res.send(index.createIndex(req.file, data));
-  res.send(index.getIndex(req.data));
+app.post('/api/create', upload.array('books'), (req, res) => {
+  const content = (req.files);
+  content.forEach((file, fileIndex) => {
+    const fileName = file.originalname;
+    const path = file.path;
+    fs.readFile(path, 'utf8', (err, data) => {
+      if (err) {
+        res.send(err);
+      }
+      const fileContent = JSON.parse(data);
+      fs.unlink(path);
+      try {
+        const creates = index.createIndex(fileName, fileContent);
+        if (fileIndex === content.length - 1) {
+          res.json(creates);
+        }
+      } catch (err) {
+        res.send('must create index');
+      }
+    });
+  });
 });
 
-app.post('/api/searchIndex', (req, res) => {
-  res.send(index.searchIndex(req.body[0], req.body[1]));
-});
-
-app.post('/isJson', (req, res) => {
+app.post('/api/search', (req, res) => {
   res.send(index.isJson(req.body));
 });
 const port = app.get('PORT');
