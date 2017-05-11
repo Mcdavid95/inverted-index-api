@@ -50,7 +50,15 @@ app.post('/api/create', upload.array('books'), (req, res) => {
 });
 
 app.post('/api/search', (req, res) => {
-  res.send(index.isJson(req.body));
+  const fileName = req.body.fileName;
+  const terms = req.body.terms;
+  if ((fileName === undefined && terms === undefined) ||
+  (fileName === ('' || []) && terms === ('' || []))) {
+    res.send('Please supply a fileName and search-term(s) or only search-term(s)');
+  } else {
+    const output = index.searchIndex(fileName, terms);
+    res.send(output);
+  }
 });
 const port = 1337;
 const server = app.listen(process.env.PORT || port, () => console.log(`LISTENING ON PORT ${port}...`));
