@@ -12,7 +12,12 @@ pids
 lib-cov
 
 # Coverage directory used by tools like istanbul
+.coverrun
 coverage
+.coverdata
+
+# Transpiled files directory
+dist
 
 # NODE_ENV files
 .env
