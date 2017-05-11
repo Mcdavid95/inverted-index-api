@@ -5,6 +5,7 @@ import coveralls from 'gulp-coveralls';
 import babel from 'gulp-babel';
 import istanbul from 'gulp-babel-istanbul';
 import injectModules from 'gulp-inject-modules';
+import exit from 'gulp-exit';
 
 
 gulp.task('transpile', () => {
@@ -46,8 +47,9 @@ gulp.task('coverage', (cb) => {
 // Load code coverage to coveralls
 gulp.task('coveralls', ['run-test'], () => {
   return gulp.src('coverage/lcov.info')
-    .pipe(coveralls());
+    .pipe(coveralls())
+    .pipe(exit());
 });
 
 
-gulp.task('default', ['run-test', 'coverage', 'coveralls', 'test']);
+gulp.task('default', ['run-test', 'test', 'coveralls', 'coverage']);
