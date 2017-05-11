@@ -52,6 +52,6 @@ app.post('/api/create', upload.array('books'), (req, res) => {
 app.post('/api/search', (req, res) => {
   res.send(index.isJson(req.body));
 });
-const port = app.get('PORT');
+const port = 1337;
 const server = app.listen(process.env.PORT || port, () => console.log(`LISTENING ON PORT ${port}...`));
 export default server;
