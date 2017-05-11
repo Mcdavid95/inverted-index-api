@@ -1,7 +1,4 @@
 import gulp from 'gulp';
-import dotenv from 'dotenv';
-// import coverage from 'gulp-coverage';
-import nodemon from 'gulp-nodemon';
 import jasmineNode from 'gulp-jasmine-node';
 import istanbulReport from 'gulp-istanbul-report';
 import coveralls from 'gulp-coveralls';
@@ -9,15 +6,6 @@ import babel from 'gulp-babel';
 import istanbul from 'gulp-babel-istanbul';
 import injectModules from 'gulp-inject-modules';
 
-dotenv.config();
-// Run app server
-gulp.task('serve', ['transpile'], () =>
-  nodemon({
-    script: './index.js',
-    ext: 'js html',
-    env: { NODE_ENV: process.env.NODE_ENV }
-  })
-);
 
 gulp.task('transpile', () => {
   return gulp.src(['src/inverted-index.js', 'tests/inverted-index-tests.spec.js', 'routes/app.js'])
@@ -62,4 +50,4 @@ gulp.task('coveralls', ['run-test'], () => {
 });
 
 
-gulp.task('default', ['run-test', 'serve', 'coverage', 'coveralls', 'test']);
+gulp.task('default', ['run-test', 'coverage', 'coveralls', 'test']);
