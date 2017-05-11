@@ -1,10 +1,9 @@
-// import jasmine from 'jasmine-node';
+import supertest from 'supertest';
 import InvertedIndex from '../src/inverted-index';
 import books from '../fixtures/books.json';
 import invalid from '../fixtures/invalidBook.json';
 import fortress from '../fixtures/book1.json';
 import server from '../routes/app';
-// import badBooks from '../fixtures/badBooks.json';
 
 describe('Read book data', () => {
   it('should not be empty', () => {
@@ -64,6 +63,13 @@ describe('Populate Index', () => {
 
       expect(index.createIndex(fileName, invalid)).toEqual('Incorrect Json format');
     });
+
+    it('should check if index has been created', () => {
+      const index = new InvertedIndex();
+      const fileName = 'Fortress';
+
+      expect(index.createIndex(fileName, fortress)).toEqual(index.getIndex(fileName));
+    });
   });
 });
 
@@ -105,13 +111,22 @@ describe('Search Index', () => {
     expect(index.searchIndex(fileName, 'American', 'thriller', 'author', 'Brown')).toEqual(result);
   });
 
-  it('should ensure searchIndex goes through all indexed files if a filename/key is not passed.', () => {
+  it('should ensure searchIndex goes through all indexed files if an array is passed without a filename/key', () => {
     const index = new InvertedIndex();
     const fileName = 'Digital Fortress';
     index.createIndex(fileName, fortress);
     const result = { 'Digital Fortress': { american: [0], thriller: [0], author: [0], brown: [0] } };
 
     expect(index.searchIndex(['American', 'thriller', 'author', 'Brown'])).toEqual(result);
+  });
+
+  it('shoul ensure SearchIndex goes through all indexed files if an string(s) is passed without fileName or key',
+  () => {
+    const index = new InvertedIndex();
+    const fileName = 'Digital Fortress';
+    index.createIndex(fileName, fortress);
+    const result = { 'Digital Fortress': { american: [0] } };
+    expect(index.searchIndex('american')).toEqual(result);
   });
 
   it('should return message: `Term not found` if search term not in index', () => {
