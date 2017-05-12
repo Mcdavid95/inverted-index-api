@@ -80,7 +80,7 @@ class InvertedIndex {
    * @param {Array } terms
    */
   searchIndex(fileName, ...terms) {
-    if (terms[0] === undefined) {
+    if (terms[0] === undefined && (!(fileName in this.index))) {
       terms = fileName;
     }
     const index = this.index[this.fileName];

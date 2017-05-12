@@ -26,27 +26,32 @@ if (NODE_ENV === 'PROD') {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
 app.post('/api/create', upload.array('books'), (req, res) => {
-  const content = (req.files);
-  content.forEach((file, fileIndex) => {
-    const fileName = file.originalname;
-    const path = file.path;
-    fs.readFile(path, 'utf8', (err, data) => {
-      if (err) {
-        res.send(err);
-      }
-      const fileContent = JSON.parse(data);
-      fs.unlink(path);
-      try {
-        const creates = index.createIndex(fileName, fileContent);
-        if (fileIndex === content.length - 1) {
-          res.json(creates);
+  if (req.files === undefined) {
+    res.send('Please pass in book and key to create index');
+  } else {
+    const content = (req.files);
+    content.forEach((file, fileIndex) => {
+      const fileName = file.originalname;
+      const path = file.path;
+      fs.readFile(path, 'utf8', (err, data) => {
+        if (err) {
+          res.send(err.message);
         }
-      } catch (err) {
-        res.send('must create index');
-      }
+        const fileContent = JSON.parse(data);
+        fs.unlink(path);
+        try {
+          const creates = index.createIndex(fileName, fileContent);
+          if (fileIndex === content.length - 1) {
+            res.json(creates);
+          }
+        } catch (err) {
+          res.send('must create index');
+        }
+      });
     });
-  });
+  }
 });
 
 app.post('/api/search', (req, res) => {
@@ -61,5 +66,5 @@ app.post('/api/search', (req, res) => {
   }
 });
 const port = 1337;
-const server = app.listen(process.env.PORT || port, () => console.log(`LISTENING ON PORT ${port}...`));
+const server = app.listen(process.env.PORT || port, () => (`LISTENING ON PORT ${port}...`));
 export default server;
