@@ -28,10 +28,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.post('/api/create', upload.array('books'), (req, res) => {
-  if (req.files === undefined) {
+  const content = req.files;
+  if (content === undefined || (/\.json$/g.test(content)) === false) {
     res.send('Please pass in book and key to create index');
   } else {
-    const content = (req.files);
     content.forEach((file, fileIndex) => {
       const fileName = file.originalname;
       const path = file.path;
