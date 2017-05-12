@@ -160,7 +160,7 @@ describe('Test Inverted-Index-Api using supertest', (done) => {
       api.post('/api/create')
           .attach()
           .end((err, res) => {
-            expect(res.text).toEqual('Please pass in book and key to create index');
+            expect(res.text).toEqual('Please pass in valid book filetype and key to create index');
             done(err);
           });
     });

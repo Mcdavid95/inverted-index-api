@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/api/create', upload.array('books'), (req, res) => {
   const content = req.files;
-  if (content === undefined || (/\.json$/g.test(content)) === false) {
+  if (content === undefined) {
     res.send('Please pass in valid book filetype and key to create index');
   } else {
     content.forEach((file, fileIndex) => {
