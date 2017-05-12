@@ -9,7 +9,7 @@ import InvertedIndex from '../src/inverted-index';
 const app = express();
 
 const index = new InvertedIndex();
-const upload = multer({ dest: '../fixtures' });
+const upload = multer({ dest: 'uploads/' });
 
 dotenv.config();
 
