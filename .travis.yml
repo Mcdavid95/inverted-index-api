@@ -4,5 +4,4 @@ node_js:
   - "6.10.0" 
  script: gulp coverage
  after_success:
- -coveralls 
- 
+ - coveralls 
