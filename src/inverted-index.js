@@ -41,7 +41,7 @@ class InvertedIndex {
       fileContent.forEach((file) => {
         const textFile = file.text;
         const removeSymbols = textFile
-        .replace(/[-.,;:#*!@%&+={}?|_~''\\()]/g, ' ').toLowerCase();
+        .replace(/[-.,;:#*!@%&+={}?[]|_~''\\()]/g, ' ').toLowerCase();
         const singleWord = removeSymbols.split(' ');
 
         singleWord.forEach((word) => {
@@ -80,7 +80,9 @@ class InvertedIndex {
    * @param {Array } terms
    */
   searchIndex(fileName, ...terms) {
-    if (terms[0] === undefined && (!(fileName in this.index))) {
+    if (this.index === undefined) {
+      throw new Error('please create index first');
+    } else if (terms[0] === undefined && (!(fileName in this.index))) {
       terms = fileName;
     }
     const index = this.index[this.fileName];

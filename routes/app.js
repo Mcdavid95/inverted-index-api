@@ -37,7 +37,7 @@ app.post('/api/create', upload.array('books'), (req, res) => {
       const path = file.path;
       fs.readFile(path, 'utf8', (err, data) => {
         if (err) {
-          res.send(err.message);
+          res.json(err.message);
         }
         const fileContent = JSON.parse(data);
         fs.unlink(path);
@@ -59,10 +59,10 @@ app.post('/api/search', (req, res) => {
   const terms = req.body.terms;
   if ((fileName === undefined && terms === undefined) ||
   (fileName === ('' || []) && terms === ('' || []))) {
-    res.send('Please supply a fileName and search-term(s) or only search-term(s)');
+    res.json('Please supply a fileName and search-term(s) or only search-term(s)');
   } else {
     const output = index.searchIndex(fileName, terms);
-    res.send(output);
+    res.json(output);
   }
 });
 const port = 1337;
