@@ -214,7 +214,7 @@ describe('Test Inverted-Index-Api using supertest', (done) => {
     });
 
     it('should return error message if no parameter is supplied', (done) => {
-      const result = 'Please supply a fileName and search-term(s) or only search-term(s)';
+      const result = JSON.stringify('Please supply a fileName and search-term(s) or only search-term(s)');
       api.post('/api/create')
           .attach('books', './fixtures/book1.json')
           .end(() => {
